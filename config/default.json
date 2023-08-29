@@ -1,0 +1,6 @@
+{
+    "port":8081,
+    "forecast":"./json/ForecastTokyo.json",
+    "presentweather":"./json/PresentWeatherInfoTokyo.json",
+    "room":"./json/RoomTemperature.json"
+}
