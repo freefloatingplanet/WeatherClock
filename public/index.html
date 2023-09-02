@@ -74,6 +74,12 @@
       	<span>{{ forcast.temp }}</span>
       </td>
     </tr>
+    <tr style="text-align: center">
+      <th scope="row">降水</th>
+      <td v-for="(forcast, index) in forcastData">
+      	<span>{{ forcast.rainypops }}</span>
+      </td>
+    </tr>
   </tbody>
 </table>
 </div>

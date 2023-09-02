@@ -4,7 +4,33 @@ const fs = require('fs').promises;
 
 let ScrapeingWeatherForecastAndSave= {};
 
-ScrapeingWeatherForecastAndSave.do = ()=>{
+// 降水確率取得
+ScrapeingWeatherForecastAndSave.getRainyForecast = ()=>{
+    let url = 'https://www.jma.go.jp/bosai/forecast/data/forecast/130000.json';
+    ax(url)
+        .then(response => {
+            const html = response.data;
+            // 0番目が天気や風速、1番目が降水確率
+            // areasは0番目が東京地方
+            const timeDefinesAreaArray = html[0].timeSeries[1].timeDefines;
+            const rainyArray = html[0].timeSeries[1].areas[0].pops;
+            retList = [];
+            timeDefinesAreaArray.forEach(function(dateTime,index,array){
+                let retJson = {};
+                let retDateTime = new Date(dateTime);
+
+                retJson["timeinfo"] = formatDate(retDateTime,"yyyy-MM-dd HH:mm:ss");
+                retJson["rainypops"] = rainyArray[index];
+
+                retList.push(retJson);
+
+            })
+            fs.writeFile(conf.rainyforecast,JSON.stringify({"list":retList}));
+        }).catch(err => console.error(err));
+}
+
+// 天気と気温を取得
+ScrapeingWeatherForecastAndSave.getWeatherTemp = ()=>{
     let url = 'https://www.jma.go.jp/bosai/jmatile/data/wdist/VPFD/130010.json';
     ax(url)
         .then(response => {
